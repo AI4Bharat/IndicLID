@@ -1,0 +1,3 @@
+- tokenized and normalized text data for each languages
+    - source : ../IndicCorp_data_subset
+    - destination : store in each language dir with file name lang_code + `_tok_norm.txt`

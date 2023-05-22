@@ -1,0 +1,2 @@
+- romanized text data for each languages using indic-en models
+    - source : ../IndicCorp_data_subset_tok_norm_romanized

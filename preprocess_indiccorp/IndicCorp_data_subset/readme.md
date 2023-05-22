@@ -1,0 +1,4 @@
+- In each language dir there is `combine.txt` file with following sources,
+    - wikidata.txt
+    - unique.txt with 20M random sentence from the original file.
+    - vikaspedia.txt
