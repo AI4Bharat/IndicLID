@@ -61,9 +61,9 @@ class IndicLID():
 
         self.device = torch.device('cuda:0' if torch.cuda.is_available() else 'cpu')
 
-        self.IndicLID_FTN_path = '/nlsasfs/home/ai4bharat/yashkm/yash/indic-lid/final_indiclid_training/indiclid_ftn/result/model_baseline_roman.bin'
-        self.IndicLID_FTR_path = '/nlsasfs/home/ai4bharat/yashkm/yash/indic-lid/final_indiclid_training/indiclid_ftr/result/model_baseline_roman.bin'
-        self.IndicLID_BERT_path = '/nlsasfs/home/ai4bharat/yashkm/yash/indic-lid/final_indiclid_training/indiclid_bert/result/basline_nn_simple.pt'
+        self.IndicLID_FTN_path = '/models/indiclid-ftn/model_baseline_roman.bin'
+        self.IndicLID_FTR_path = '/models/indiclid-ftr/model_baseline_roman.bin'
+        self.IndicLID_BERT_path = '/models/indiclid-bert/basline_nn_simple.pt'
 
         self.IndicLID_FTN = fasttext.load_model(self.IndicLID_FTN_path)
         self.IndicLID_FTR = fasttext.load_model(self.IndicLID_FTR_path)
