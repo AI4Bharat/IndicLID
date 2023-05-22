@@ -118,14 +118,280 @@ Following table presents the results of different model variants on the romanize
 
 
 ## Resources
+### Download IndicLID model v1.0
+<!-- hyperlinks for downloading the models -->
+IndicLID-FTN [v1.0](https://github.com/AI4Bharat/IndicLID/releases/download/v1.0/indiclid-ftn.zip)
+
+IndicLID-FTR [v1.0](https://github.com/AI4Bharat/IndicLID/releases/download/v1.0/indiclid-ftr.zip)
+
+IndicLID-BERT [v1.0](https://github.com/AI4Bharat/IndicLID/releases/download/v1.0/indiclid-bert.zip)
+
+<!-- mirror links set up the public drive -->	
+
 
 ## Running Inference
 
-## Training model
+### Interface
+<!-- colab integratation on running the model on custom input python script -->
+Inference Notebook --> [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/drive/1pLMeaGhYgfNRmYHPHkvAmcR-8xMMZOme?usp=sharing)
 
-## Details of models and hyperparameters
+
+
+## Training model
+###  Setting up your environment
+<details><summary> Click to expand </summary>
+
+```bash
+# Clone IndicXlit repository
+git clone https://github.com/AI4Bharat/IndicXlit.git
+
+# Install required libraries
+pip install indic-nlp-library
+
+# Install Fairseq from source
+git clone https://github.com/pytorch/fairseq.git
+cd fairseq
+pip install --editable ./
+
+```
+</details>
+
+### Training procedure and code
+
+We train 3 models separately which are the components of IndicLID model. Please refer to the paper for more architectural detials.
+
+We use fasttext models to train out IndicLID-FTR and IndicLID-FTN component. Following are the steps to train our fasttext models.
+- create a train file that contains the train sentences in the following format, "__label__langcode <space> <Train_Sentence>"
+- following is the script to train the fasttext model
+```
+import fasttext
+import csv
+import sys
+	
+model = fasttext.train_supervised(
+    input = '../corpus/train_combine.txt', 
+    loss = 'hs',
+    verbose = 1,
+    dim = 8,
+    autotuneValidationFile = '../corpus/valid_combine.txt', 
+    autotuneDuration = 14400*3
+    )
+model.save_model("../result/model_baseline_roman.bin")
+
+```
+	
+For our IndicLID-BERT model, we finetune [IndicBERT]() model with our romaanized training data. Script for the training IndiLID-BERT model can be found here.
+
+	
+### Evaluating a trained model
+Script to generate the output can be found here
+
 
 ## Directory structure
+IndicLID/
+├── Benchmark
+│   ├── compile_final_pilot_1.py
+│   ├── create_benchmark_extra.py
+│   └── create_benchmark.py
+├── deployement
+│   ├── test_script.py
+│   └── working
+│       └── IndicLID.py
+├── filter_Dakshina
+│   ├── merge_final_native.py
+│   ├── merge_final.py
+│   └── separate_validation_set.py
+├── final_runs_ACL_inference
+│   ├── analysis
+│   │   ├── language_wise
+│   │   │   ├── inference.py
+│   │   │   ├── prepare_corpus.py
+│   │   │   ├── train_fasttext.py
+│   │   │   ├── train_IndicBERT.py
+│   │   │   └── word_overlap_confustion_matrix.py
+│   │   ├── length_wise
+│   │   │   ├── acc_len_wise_analysis.py
+│   │   │   └── save_prediction_dict.py
+│   │   └── word_embeddings
+│   │       ├── PCA_cluster_embeddings.py
+│   │       ├── TSNE_cluster_embeddings.py
+│   │       └── word_neighbours.py
+│   ├── native_model
+│   │   ├── cld3_comparison
+│   │   │   ├── cld3
+│   │   │   │   ├── inference.py
+│   │   │   │   ├── inference_time_1.py
+│   │   │   │   ├── inference_time.py
+│   │   │   │   └── prepare_corpus.py
+│   │   │   ├── fasttext_4
+│   │   │   │   ├── inference.py
+│   │   │   │   ├── inference_time_1.py
+│   │   │   │   ├── inference_time.py
+│   │   │   │   └── prepare_corpus.py
+│   │   │   └── fasttext_8
+│   │   │       ├── inference.py
+│   │   │       ├── inference_time_1.py
+│   │   │       ├── inference_time.py
+│   │   │       └── prepare_corpus.py
+│   │   ├── corpus_inf_native
+│   │   │   ├── lang_stat_test_native.csv
+│   │   │   └── prepare_corpus.py
+│   │   ├── fasttext
+│   │   │   └── tune_run
+│   │   │       ├── inference.py
+│   │   │       ├── inference_time_1.py
+│   │   │       ├── inference_time.py
+│   │   │       ├── post_error_analysis.py
+│   │   │       ├── prepare_corpus.py
+│   │   │       ├── temp.sh
+│   │   │       └── train.py
+│   │   ├── finetuning
+│   │   │   ├── IndicBERT
+│   │   │   │   ├── freezed_bert_all_layer
+│   │   │   │   │   ├── inference.py
+│   │   │   │   │   ├── len_wise_analysis.py
+│   │   │   │   │   └── train.py
+│   │   │   │   └── unfreeze_layers
+│   │   │   │       ├── inference.py
+│   │   │   │       ├── len_wise_analysis.py
+│   │   │   │       ├── temp.sh
+│   │   │   │       └── train.py
+│   │   │   ├── MuRIL
+│   │   │   │   ├── freezed_bert_all_layer
+│   │   │   │   │   ├── inference.py
+│   │   │   │   │   └── train.py
+│   │   │   │   └── unfreeze_layers
+│   │   │   │       ├── inference.py
+│   │   │   │       ├── len_wise_analysis.py
+│   │   │   │       ├── temp.sh
+│   │   │   │       └── train.py
+│   │   │   └── XMLR
+│   │   │       └── freezed_bert_all_layer
+│   │   │           ├── inference.py
+│   │   │           └── train.py
+│   │   └── nllb_comparison
+│   │       ├── fasttext_4
+│   │       │   ├── inference.py
+│   │       │   ├── inference_time_1.py
+│   │       │   ├── inference_time.py
+│   │       │   └── prepare_corpus.py
+│   │       ├── fasttext_8
+│   │       │   ├── inference.py
+│   │       │   ├── inference_time_1.py
+│   │       │   ├── inference_time.py
+│   │       │   └── prepare_corpus.py
+│   │       ├── indicbert
+│   │       │   ├── inference.py
+│   │       │   └── prepare_corpus.py
+│   │       ├── indiclid_fast_4
+│   │       │   ├── 2_stage_inference.py
+│   │       │   └── prepare_corpus.py
+│   │       ├── indiclid_fast_8
+│   │       │   ├── 2_stage_inference.py
+│   │       │   └── prepare_corpus.py
+│   │       └── nllb
+│   │           ├── inference.py
+│   │           ├── inference_time_1.py
+│   │           ├── inference_time.py
+│   │           └── prepare_corpus.py
+│   ├── roman_model
+│   │   ├── corpus_inf_roman
+│   │   │   ├── lang_stat_test_roman.csv
+│   │   │   ├── lang_stat_test_romanized_indicxlit.csv
+│   │   │   └── prepapre_test_set.py
+│   │   ├── fasttext
+│   │   │   └── tune_run
+│   │   │       ├── inference.py
+│   │   │       ├── inference_time_1.py
+│   │   │       └── inference_time.py
+│   │   └── finetuning
+│   │       ├── IndicBERT
+│   │       │   ├── freezed_bert_all_layer
+│   │       │   │   ├── inference.py
+│   │       │   │   ├── len_wise_analysis.py
+│   │       │   │   └── train.py
+│   │       │   └── unfreeze_layers
+│   │       │       ├── inference.py
+│   │       │       ├── inference_time_1.py
+│   │       │       ├── inference_time.py
+│   │       │       ├── len_wise_analysis.py
+│   │       │       ├── temp.sh
+│   │       │       └── train.py
+│   │       ├── MuRIL
+│   │       │   ├── freezed_bert_all_layer
+│   │       │   │   ├── inference.py
+│   │       │   │   ├── slurm-120303.out
+│   │       │   │   └── train.py
+│   │       │   └── unfreeze_layers
+│   │       │       ├── inference.py
+│   │       │       ├── len_wise_analysis.py
+│   │       │       ├── temp.sh
+│   │       │       └── train.py
+│   │       └── XMLR
+│   │           └── freezed_bert_all_layer
+│   │               ├── inference.py
+│   │               └── train.py
+│   ├── two_stage
+│   │   ├── IndicBERT
+│   │   │   ├── 2_stage_inference.py
+│   │   │   ├── display_confusion_matrix.py
+│   │   │   ├── inference_time_1.py
+│   │   │   ├── inference_time.py
+│   │   │   └── prepare_scored_dakshina_romanized.py
+│   │   └── MuRIL
+│   │       └── 2_stage_inference.py
+│   └── two_stage_native
+│       └── IndicBERT_fasttext_8
+│           ├── 2_stage_inference.py
+│           ├── display_confusion_matrix.py
+│           └── prepare_scored_dakshina_romanized.py
+├── nueral_net
+│   ├── experiments
+│   │   ├── skeleton
+│   │   │   ├── create_sen_embed.py
+│   │   │   ├── inference.py
+│   │   │   ├── prepare_corpus.py
+│   │   │   └── train.py
+│   │   └── skeleton_transform
+│   │       ├── inference.py
+│   │       ├── prepare_corpus.py
+│   │       └── train.py
+│   └── experiments_tune
+│       └── skeleton_tuning
+│           ├── inference.py
+│           ├── prepare_corpus.py
+│           └── train.py
+├── preprocess_indiccorp
+│   ├── IndicCorp_data
+│   │   ├── extract_and_combine.log
+│   │   ├── extract_and_combine.py
+│   │   ├── indiccorp_combine_stats.csv
+│   │   └── readme.md
+│   ├── IndicCorp_data_subset
+│   │   ├── combine_sources.py
+│   │   ├── indiccorp_combine_stats.csv
+│   │   └── readme.md
+│   ├── IndicCorp_data_subset_tok_norm
+│   │   ├── readme.md
+│   │   └── tokenize_and_normalize.py
+│   ├── IndicCorp_data_subset_tok_norm_romanized
+│   │   ├── create_ip_word_list.py
+│   │   ├── fairseq_postprocess.py
+│   │   ├── indic_tok.py
+│   │   ├── interactive.sh
+│   │   ├── lang_list.txt
+│   │   ├── preprocess_en.py
+│   │   ├── readme.md
+│   │   └── romanize_corpus.py
+│   └── IndicCorp_data_subset_tok_norm_romanized_100k_sample_cleaned
+│       ├── create_ip_word_list.py
+│       ├── fairseq_postprocess.py
+│       ├── indic_tok.py
+│       ├── interactive.sh
+│       ├── lang_list.txt
+│       ├── preprocess_en.py
+│       └── romanize_corpus.py
+└── README.md
 
 
 <!-- citing information -->
@@ -141,9 +407,9 @@ The IndicLID code (and models) are released under the MIT License.
 <!-- Contributors -->
 ### Contributors
  - Yash Madhani <sub> ([AI4Bharat](https://ai4bharat.org), [IITM](https://www.iitm.ac.in)) </sub>
- - Anoop Kunchukuttan <sub> ([AI4Bharat](https://ai4bharat.org), [Microsoft](https://www.microsoft.com/en-in/)) </sub>
  - Mitesh M. Khapra <sub> ([AI4Bharat](https://ai4bharat.org), [IITM](https://www.iitm.ac.in)) </sub>
-
+ - Anoop Kunchukuttan <sub> ([AI4Bharat](https://ai4bharat.org), [Microsoft](https://www.microsoft.com/en-in/)) </sub>
+	
 <!-- Contact -->
 ### Contact
 - Anoop Kunchukuttan ([anoop.kunchukuttan@gmail.com](mailto:anoop.kunchukuttan@gmail.com))
