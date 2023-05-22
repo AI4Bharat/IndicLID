@@ -188,6 +188,7 @@ Script to generate the output can be found here
 
 
 ## Directory structure
+```
 IndicLID/
 ├── Benchmark
 │   ├── compile_final_pilot_1.py
@@ -392,7 +393,7 @@ IndicLID/
 │       ├── preprocess_en.py
 │       └── romanize_corpus.py
 └── README.md
-
+```
 
 <!-- citing information -->
 
