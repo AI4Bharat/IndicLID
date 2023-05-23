@@ -64,10 +64,10 @@
 | Other | other |
 
 ### Evaluation Results
-IndicLID is evaluated on [Bhasha-Abhijnaanam benchmark]() which is released alnog with this work. For native-script text, IndicLID has better language coverage than existing LIDs and is competitive or better than other LIDs. IndicLID model is 10 times faster and 4 times smaller than the [NLLB model]() also establish a strong baseline results on the roman-script text. For more details, refer our [paper]().
+IndicLID is evaluated on [Bhasha-Abhijnaanam benchmark](https://huggingface.co/datasets/ai4bharat/Bhasha-Abhijnaanam) which is released alnog with this work. For native-script text, IndicLID has better language coverage than existing LIDs and is competitive or better than other LIDs. IndicLID model is 10 times faster and 4 times smaller than the [NLLB model](https://huggingface.co/docs/transformers/model_doc/nllb) also establish a strong baseline results on the roman-script text. For more details, refer our [paper]().
 
 #### Native LID Results
-Following table compares IndicLID-FTN model with the [NLLB model]() and the [CLD3 model](). We restrict the comparison to languages that are common with IndicLID (count of common languages is indicated in brackets). Throughput is number of sentence/second.
+Following table compares IndicLID-FTN model with the [NLLB model](https://huggingface.co/docs/transformers/model_doc/nllb) and the [CLD3 model](https://github.com/google/cld3). We restrict the comparison to languages that are common with IndicLID (count of common languages is indicated in brackets). Throughput is number of sentence/second.
 
 | Model | Precison | Recall | F1-score | Accuracy | Throughput | Model Size |  
 | ----- | -------- | ------ | -------- | -------- | ---------- | ---------- |  
@@ -97,28 +97,22 @@ Following table presents the results of different model variants on the romanize
 - [Table of contents](#table-of-contents)
 - [Resources](#resources)
   - [Download IndicLID model](#download-indiclid-model)
-  - [Using hosted APIs](#using-hosted-apis)
-  - [Accessing on ULCA](#accessing-on-ulca)
 - [Running inference](#running-inference)
-  - [Command line interface](#command-line-interface)
-  - [Python interface](#python-interface)
+  - [Interface](#interface)
 - [Training model](#training-model)
   - [Setting up your environment](#setting-up-your-environment)
-  - [Details of models and hyperparameters](#details-of-models-and-hyperparameters)
   - [Training procedure and code](#training-procedure-and-code)
   - [Evaluating trained model](#evaluating-trained-model)
-  - [Detailed benchmarking results](#detailed-benchmarking-results)
-- [Finetuning model on your data](#finetuning-model-on-your-data)
 - [Directory structure](#directory-structure)
-- [Citing](#citing)
+- [Citing information](#citing-information)
   - [License](#license)
   - [Contributors](#contributors)
   - [Contact](#contact)
-- [Acknowledgements]
+- [Acknowledgements](#acknowledgements)
 
 
 ## Resources
-### Download IndicLID model v1.0
+### Download IndicLID model
 <!-- hyperlinks for downloading the models -->
 IndicLID-FTN [v1.0](https://github.com/AI4Bharat/IndicLID/releases/download/v1.0/indiclid-ftn.zip)
 
@@ -142,17 +136,8 @@ Inference Notebook --> [![Open In Colab](https://colab.research.google.com/asset
 <details><summary> Click to expand </summary>
 
 ```bash
-# Clone IndicXlit repository
-git clone https://github.com/AI4Bharat/IndicXlit.git
-
-# Install required libraries
-pip install indic-nlp-library
-
-# Install Fairseq from source
-git clone https://github.com/pytorch/fairseq.git
-cd fairseq
-pip install --editable ./
-
+pip3 install fasttext
+pip3 install transformers
 ```
 </details>
 
@@ -161,7 +146,8 @@ pip install --editable ./
 We train 3 models separately which are the components of IndicLID model. Please refer to the paper for more architectural detials.
 
 We use fasttext models to train out IndicLID-FTR and IndicLID-FTN component. Following are the steps to train our fasttext models.
-- create a train file that contains the train sentences in the following format, "__label__langcode <space> <Train_Sentence>"
+- Create a train file that contains the train sentences in the following format,
+"__label__langcode <space> <Train_Sentence>"
 - following is the script to train the fasttext model
 ```
 import fasttext
@@ -177,14 +163,13 @@ model = fasttext.train_supervised(
     autotuneDuration = 14400*3
     )
 model.save_model("../result/model_baseline_roman.bin")
-
 ```
 	
-For our IndicLID-BERT model, we finetune [IndicBERT]() model with our romaanized training data. Script for the training IndiLID-BERT model can be found here.
+For our IndicLID-BERT model, we finetune [IndicBERT](https://github.com/AI4Bharat/IndicBERT) model with our romaanized training data. Script for the training IndiLID-BERT model can be found [here](https://github.com/AI4Bharat/IndicLID/blob/master/final_runs_train/roman_model/finetuning/IndicBERT/unfreeze_layers/train.py).
 
 	
-### Evaluating a trained model
-Script to generate the output can be found here
+### Evaluating trained model
+Script to generate the output can be found [here](https://github.com/AI4Bharat/IndicLID/blob/master/Inference/ai4bharat/IndicLID.py).
 
 
 ## Directory structure
@@ -395,7 +380,7 @@ IndicLID/
 └── README.md
 ```
 
-<!-- citing information -->
+<!-- Citing information -->
 
 We would like to hear from you if:
 - You are using our resources. Please let us know how you are putting these resources to use.
@@ -418,5 +403,5 @@ The IndicLID code (and models) are released under the MIT License.
 - Pratyush Kumar ([pratyush@cse.iitm.ac.in](mailto:pratyush@cse.iitm.ac.in))
 
 ## Acknowledgements
-
+	
 We would like to thank EkStep Foundation for their generous grant which helped in setting up the Centre for AI4Bharat at IIT Madras to support our students, research staff, data and computational requirements. We would like to thank The Ministry of Electronics and Information Technology (NLTM) for its grant to support the creation of datasets and models for Indian languages under its ambitious Bhashini project. We would also like to thank the Centre for Development of Advanced Computing, India (C-DAC) for providing access to the Param Siddhi supercomputer for training our models. Lastly, we would like to thank Microsoft for its grant to create datasets, tools and resources for Indian languages.
