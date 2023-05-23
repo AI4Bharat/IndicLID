@@ -211,6 +211,9 @@ class IndicLID():
 
     def native_inference(self, input_list, output_dict):
 
+        if not input_list:
+            return output_dict
+        
         # inference for fasttext native script model
         input_texts = [line[1] for line in input_list]
         IndicLID_FTN_predictions = self.IndicLID_FTN.predict(input_texts)
@@ -224,6 +227,9 @@ class IndicLID():
 
     def roman_inference(self, input_list, output_dict, batch_size):
 
+        if not input_list:
+            return output_dict
+        
         # 1st stage
         # inference for fasttext roman script model
         input_texts = [line[1] for line in input_list]
@@ -245,6 +251,9 @@ class IndicLID():
     def IndicBERT_roman_inference(self, IndicLID_BERT_inputs, output_dict, batch_size):
         # inference for IndicBERT roman script model
 
+        if not IndicLID_BERT_inputs:
+            return output_dict
+        
         df = pd.DataFrame(IndicLID_BERT_inputs)
         dataloader = self.get_dataloaders(df.iloc[:,0], df.iloc[:,1], batch_size)
 
