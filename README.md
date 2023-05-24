@@ -112,6 +112,16 @@ Following table presents the results of different model variants on the romanize
 
 
 ## Resources
+
+### Download Bhasha-Abhijnaanam Test Set
+[Huggingface](https://huggingface.co/datasets/ai4bharat/Bhasha-Abhijnaanam)
+
+### Download Training Data
+[Native Script Training Data](https://github.com/AI4Bharat/IndicLID/releases/download/v1.0/native_script_train_valid_data.zip)
+
+[Roman Script Training Data](https://github.com/AI4Bharat/IndicLID/releases/download/v1.0/roman_script_train_valid_data.zip)
+
+
 ### Download IndicLID model
 <!-- hyperlinks for downloading the models -->
 IndicLID-FTN [v1.0](https://github.com/AI4Bharat/IndicLID/releases/download/v1.0/indiclid-ftn.zip)
