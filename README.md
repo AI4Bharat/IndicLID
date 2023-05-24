@@ -1,6 +1,6 @@
 <div align="center">
 	<h1><b><i>IndicLID</i></b></h1>
-	<a href="https://ai4bharat.org/indiclid">Website</a> |
+	<a href="https://ai4bharat.iitm.ac.in/indiclid">Website</a> |
 	<a href="#download-indiclid-model">Downloads</a> |
 	<a href="">Demo</a>
   <br><br>
@@ -392,13 +392,13 @@ The IndicLID code (and models) are released under the MIT License.
 
 <!-- Contributors -->
 ### Contributors
- - Yash Madhani <sub> ([AI4Bharat](https://ai4bharat.org), [IITM](https://www.iitm.ac.in)) </sub>
- - Mitesh M. Khapra <sub> ([AI4Bharat](https://ai4bharat.org), [IITM](https://www.iitm.ac.in)) </sub>
- - Anoop Kunchukuttan <sub> ([AI4Bharat](https://ai4bharat.org), [Microsoft](https://www.microsoft.com/en-in/), [IITM](https://www.iitm.ac.in)) </sub>
+ - Yash Madhani <sub> ([AI4Bharat](https://ai4bharat.iitm.ac.in/), [IITM](https://www.iitm.ac.in)) </sub>
+ - Mitesh M. Khapra <sub> ([AI4Bharat](https://ai4bharat.iitm.ac.in/), [IITM](https://www.iitm.ac.in)) </sub>
+ - Anoop Kunchukuttan <sub> ([AI4Bharat](https://ai4bharat.iitm.ac.in/), [Microsoft](https://www.microsoft.com/en-in/), [IITM](https://www.iitm.ac.in)) </sub>
 	
 <!-- Contact -->
 ### Contact
-- Yash Madhani <sub> ([AI4Bharat](https://ai4bharat.org), [IITM](https://www.iitm.ac.in)) </sub>	
+- Yash Madhani <sub> ([AI4Bharat](https://ai4bharat.iitm.ac.in/), [IITM](https://www.iitm.ac.in)) </sub>	
 - Anoop Kunchukuttan ([anoop.kunchukuttan@gmail.com](mailto:anoop.kunchukuttan@gmail.com))
 - Mitesh Khapra ([miteshk@cse.iitm.ac.in](mailto:miteshk@cse.iitm.ac.in))
 
