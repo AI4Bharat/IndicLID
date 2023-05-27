@@ -64,7 +64,7 @@
 | Other | other |
 
 ### Evaluation Results
-IndicLID is evaluated on [Bhasha-Abhijnaanam benchmark](https://huggingface.co/datasets/ai4bharat/Bhasha-Abhijnaanam) which is released alnog with this work. For native-script text, IndicLID has better language coverage than existing LIDs and is competitive or better than other LIDs. IndicLID model is 10 times faster and 4 times smaller than the [NLLB model](https://huggingface.co/docs/transformers/model_doc/nllb) also establish a strong baseline results on the roman-script text. For more details, refer our [paper]().
+IndicLID is evaluated on [Bhasha-Abhijnaanam benchmark](https://huggingface.co/datasets/ai4bharat/Bhasha-Abhijnaanam) which is released alnog with this work. For native-script text, IndicLID has better language coverage than existing LIDs and is competitive or better than other LIDs. IndicLID model is 10 times faster and 4 times smaller than the [NLLB model](https://huggingface.co/docs/transformers/model_doc/nllb) also establish a strong baseline results on the roman-script text. For more details, refer our [paper](https://arxiv.org/abs/2305.15814).
 
 #### Native LID Results
 Following table compares IndicLID-FTN model with the [NLLB model](https://huggingface.co/docs/transformers/model_doc/nllb) and the [CLD3 model](https://github.com/google/cld3). We restrict the comparison to languages that are common with IndicLID (count of common languages is indicated in brackets). Throughput is number of sentence/second.
