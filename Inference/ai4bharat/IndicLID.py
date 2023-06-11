@@ -38,8 +38,8 @@ class IndicBERT_Data(Dataset):
     def __getitem__(self, idx):
         # print(self.x)
         
-        sample = self.x[idx]
-        text = sample[0]
+        text = self.x[idx]
+        # text = sample[0]
 
         index = self.i[idx]
         
