@@ -39,7 +39,7 @@ class IndicBERT_Data(Dataset):
         # print(self.x)
         
         text = self.x[idx]
-        # text = sample
+        # text = sample[0]
 
         index = self.i[idx]
         
@@ -54,16 +54,16 @@ class IndicBERT_Data(Dataset):
 
 class IndicLID():
 
-    def __init__(self,):
+    def __init__(self, input_threshold = 0.5, roman_lid_threshold = 0.6):
         # define dictionary for roman and native languages to langauge code
         # define input_threhsold percentage for native and roman script input diversion 
         # define model_threhsold for roman script model
 
         self.device = torch.device('cuda:0' if torch.cuda.is_available() else 'cpu')
 
-        self.IndicLID_FTN_path = '/nlsasfs/home/ai4bharat/yashkm/yash/indic-lid/final_indiclid_training/indiclid_ftn/result/model_baseline_roman.bin'
-        self.IndicLID_FTR_path = '/nlsasfs/home/ai4bharat/yashkm/yash/indic-lid/final_indiclid_training/indiclid_ftr/result/model_baseline_roman.bin'
-        self.IndicLID_BERT_path = '/nlsasfs/home/ai4bharat/yashkm/yash/indic-lid/final_indiclid_training/indiclid_bert/result/basline_nn_simple.pt'
+        self.IndicLID_FTN_path = 'models/indiclid-ftn/model_baseline_roman.bin'
+        self.IndicLID_FTR_path = 'models/indiclid-ftr/model_baseline_roman.bin'
+        self.IndicLID_BERT_path = 'models/indiclid-bert/basline_nn_simple.pt'
 
         self.IndicLID_FTN = fasttext.load_model(self.IndicLID_FTN_path)
         self.IndicLID_FTR = fasttext.load_model(self.IndicLID_FTR_path)
@@ -71,8 +71,8 @@ class IndicLID():
         self.IndicLID_BERT.eval()
         self.IndicLID_BERT_tokenizer = AutoTokenizer.from_pretrained("ai4bharat/IndicBERTv2-MLM-only")
         
-        self.input_threshold = 0.5
-        self.model_threshold = 0.6
+        self.input_threshold = input_threshold
+        self.model_threshold = roman_lid_threshold
         self.classes = 47     
         
         self.IndicLID_lang_code_dict = {
@@ -210,7 +210,7 @@ class IndicLID():
 
 
     def native_inference(self, input_list, output_dict):
-        
+
         if not input_list:
             return output_dict
         
@@ -221,12 +221,12 @@ class IndicLID():
         # add result of input directly to output_dict
         for input, pred_label, pred_score in zip(input_list, IndicLID_FTN_predictions[0], IndicLID_FTN_predictions[1]):
             # print(pred_score)
-            output_dict[input[0]] = (input[1], pred_label[0][9:], pred_score[0])
+            output_dict[input[0]] = (input[1], pred_label[0][9:], pred_score[0], 'IndicLID-FTN')
 
         return output_dict
 
     def roman_inference(self, input_list, output_dict, batch_size):
-        
+
         if not input_list:
             return output_dict
         
@@ -239,7 +239,7 @@ class IndicLID():
         # add result of input directly to output_dict
         for input, pred_label, pred_score in zip(input_list, IndicLID_FTR_predictions[0], IndicLID_FTR_predictions[1]):
             if pred_score[0] > self.model_threshold:
-                output_dict[input[0]] = (input[1], pred_label[0][9:], pred_score[0])
+                output_dict[input[0]] = (input[1], pred_label[0][9:], pred_score[0], 'IndicLID-FTR')
             else:
                 IndicLID_BERT_inputs.append(input)
         
@@ -250,6 +250,7 @@ class IndicLID():
     
     def IndicBERT_roman_inference(self, IndicLID_BERT_inputs, output_dict, batch_size):
         # inference for IndicBERT roman script model
+
         if not IndicLID_BERT_inputs:
             return output_dict
         
@@ -278,7 +279,7 @@ class IndicLID():
                 for index, input, pred_label, logit in zip(batch_indices, batch_inputs, batch_predicted, batch_outputs.logits):
                     output_dict[index] = (input,
                                             self.IndicLID_lang_code_dict_reverse[pred_label.item()], 
-                                            logit[pred_label.item()].item()
+                                            logit[pred_label.item()].item(), 'IndicLID-BERT'
                                             )
 
 
