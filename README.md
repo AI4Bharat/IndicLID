@@ -48,8 +48,8 @@
 | Nepali (Latin script) | nep_Latn |  
 | Oriya (Oriya script) | ori_Orya |  
 | Oriya (Latin script) | ori_Latn |  
-| Panjabi (Gurmukhi script) | pan_Guru |  
-| Panjabi (Latin script) | pan_Latn |  
+| Punjabi (Gurmukhi script) | pan_Guru |  
+| Punjabi (Latin script) | pan_Latn |  
 | Sanskrit (Devanagari script) | san_Deva |  
 | Sanskrit (Latin script) | san_Latn |  
 | Santali (Ol_Chiki  script) | sat_Olch |  
