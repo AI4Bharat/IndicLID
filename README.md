@@ -121,6 +121,8 @@ Following table presents the results of different model variants on the romanize
 
 [Roman Script Training Data](https://github.com/AI4Bharat/IndicLID/releases/download/v1.0/roman_script_train_valid_data.zip)
 
+[Parallel native-roman train pairs](https://github.com/AI4Bharat/IndicLID/releases/download/v1.0/parallel_romanized_train_data.zip)
+
 
 ### Download IndicLID model
 <!-- hyperlinks for downloading the models -->
