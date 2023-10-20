@@ -116,6 +116,8 @@ Following table presents the results of different model variants on the romanize
 ### Download Bhasha-Abhijnaanam Test Set
 [Huggingface](https://huggingface.co/datasets/ai4bharat/Bhasha-Abhijnaanam)
 
+[Github](https://github.com/AI4Bharat/IndicLID/releases/download/v1.0/bhasha-abhijnaanam_test_set.zip)
+
 ### Download Training Data
 [Native Script Training Data](https://github.com/AI4Bharat/IndicLID/releases/download/v1.0/native_script_train_valid_data.zip)
 
