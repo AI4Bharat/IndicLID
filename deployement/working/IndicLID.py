@@ -297,7 +297,7 @@ class IndicLID():
         
     def predict(self, input):
         input_list = [input,]
-        self.batch_predict(input_list, 1)
+        return self.batch_predict(input_list, 1)
 
     def batch_predict(self, input_list, batch_size):
 
