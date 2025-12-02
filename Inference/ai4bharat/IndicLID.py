@@ -67,7 +67,7 @@ class IndicLID():
 
         self.IndicLID_FTN = fasttext.load_model(self.IndicLID_FTN_path)
         self.IndicLID_FTR = fasttext.load_model(self.IndicLID_FTR_path)
-        self.IndicLID_BERT = torch.load(self.IndicLID_BERT_path, map_location = self.device)
+        self.IndicLID_BERT = torch.load(self.IndicLID_BERT_path, map_location = self.device, weights_only=False)
         self.IndicLID_BERT.eval()
         self.IndicLID_BERT_tokenizer = AutoTokenizer.from_pretrained("ai4bharat/IndicBERTv2-MLM-only")
         
