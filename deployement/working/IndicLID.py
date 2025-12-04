@@ -70,6 +70,15 @@ class IndicLID():
         self.IndicLID_BERT = torch.load(self.IndicLID_BERT_path, map_location = self.device)
         self.IndicLID_BERT.eval()
         self.IndicLID_BERT_tokenizer = AutoTokenizer.from_pretrained("ai4bharat/IndicBERTv2-MLM-only")
+
+
+
+        # Fix incorrect language codes
+        self.lang_code_mapping = {
+            'tam_Tamil': 'tam_Taml',
+            'ori_Orya': 'ory_Orya'
+        }
+
         
         self.input_threshold = input_threshold
         self.model_threshold = roman_lid_threshold
@@ -213,17 +222,26 @@ class IndicLID():
 
         if not input_list:
             return output_dict
-        
-        # inference for fasttext native script model
+    
+    # inference for fasttext native script model
         input_texts = [line[1] for line in input_list]
         IndicLID_FTN_predictions = self.IndicLID_FTN.predict(input_texts)
-        
-        # add result of input directly to output_dict
+    
+    # add result of input directly to output_dict
         for input, pred_label, pred_score in zip(input_list, IndicLID_FTN_predictions[0], IndicLID_FTN_predictions[1]):
-            # print(pred_score)
-            output_dict[input[0]] = (input[1], pred_label[0][9:], pred_score[0], 'IndicLID-FTN')
+        
+        # extract language code (remove "__label__")
+            lang_code = pred_label[0][9:]
+
+        # 🔥 apply language code correction
+            if lang_code in self.lang_code_mapping:
+                lang_code = self.lang_code_mapping[lang_code]
+
+        # save updated result
+            output_dict[input[0]] = (input[1], lang_code, pred_score[0], 'IndicLID-FTN')
 
         return output_dict
+
 
     def roman_inference(self, input_list, output_dict, batch_size):
 
