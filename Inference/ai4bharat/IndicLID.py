@@ -75,6 +75,13 @@ class IndicLID():
         self.model_threshold = roman_lid_threshold
         self.classes = 47     
         
+        # Standardize raw model tags to ISO 15924 / BCP 47 codes for downstream IndicTrans2 compatibility
+        self.lang_code_mapping = {
+            'tam_Tamil': 'tam_Taml',
+            'ori_Orya': 'ory_Orya',
+            'ori_Latn': 'ory_Latn'
+        }
+        
         self.IndicLID_lang_code_dict = {
             'asm_Latn' : 0,
             'ben_Latn' : 1,
@@ -221,7 +228,9 @@ class IndicLID():
         # add result of input directly to output_dict
         for input, pred_label, pred_score in zip(input_list, IndicLID_FTN_predictions[0], IndicLID_FTN_predictions[1]):
             # print(pred_score)
-            output_dict[input[0]] = (input[1], pred_label[0][9:], pred_score[0], 'IndicLID-FTN')
+            raw_code = pred_label[0][9:]
+            lang_code = self.lang_code_mapping.get(raw_code, raw_code)
+            output_dict[input[0]] = (input[1], lang_code, pred_score[0], 'IndicLID-FTN')
 
         return output_dict
 
@@ -239,7 +248,9 @@ class IndicLID():
         # add result of input directly to output_dict
         for input, pred_label, pred_score in zip(input_list, IndicLID_FTR_predictions[0], IndicLID_FTR_predictions[1]):
             if pred_score[0] > self.model_threshold:
-                output_dict[input[0]] = (input[1], pred_label[0][9:], pred_score[0], 'IndicLID-FTR')
+                raw_code = pred_label[0][9:]
+                lang_code = self.lang_code_mapping.get(raw_code, raw_code)
+                output_dict[input[0]] = (input[1], lang_code, pred_score[0], 'IndicLID-FTR')
             else:
                 IndicLID_BERT_inputs.append(input)
         
@@ -277,8 +288,10 @@ class IndicLID():
             
             
                 for index, input, pred_label, logit in zip(batch_indices, batch_inputs, batch_predicted, batch_outputs.logits):
+                    raw_code = self.IndicLID_lang_code_dict_reverse[pred_label.item()]
+                    lang_code = self.lang_code_mapping.get(raw_code, raw_code)
                     output_dict[index] = (input,
-                                            self.IndicLID_lang_code_dict_reverse[pred_label.item()], 
+                                            lang_code, 
                                             logit[pred_label.item()].item(), 'IndicLID-BERT'
                                             )
 
@@ -306,7 +319,8 @@ class IndicLID():
         
     def predict(self, input):
         input_list = [input,]
-        self.batch_predict(input_list, 1)
+        results = self.batch_predict(input_list, 1)
+        return results[0] if results else None
 
     def batch_predict(self, input_list, batch_size):
 
