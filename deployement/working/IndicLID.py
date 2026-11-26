@@ -273,13 +273,13 @@ class IndicLID():
                             )
                 
 
-                _, batch_predicted = torch.max(batch_outputs.logits, 1)
-            
-            
-                for index, input, pred_label, logit in zip(batch_indices, batch_inputs, batch_predicted, batch_outputs.logits):
+                probs = F.softmax(batch_outputs.logits, dim=1)
+                batch_scores, batch_predicted = torch.max(probs, 1)
+
+                for index, input, pred_label, pred_score in zip(batch_indices, batch_inputs, batch_predicted, batch_scores):
                     output_dict[index] = (input,
-                                            self.IndicLID_lang_code_dict_reverse[pred_label.item()], 
-                                            logit[pred_label.item()].item(), 'IndicLID-BERT'
+                                            self.IndicLID_lang_code_dict_reverse[pred_label.item()],
+                                            pred_score.item(), 'IndicLID-BERT'
                                             )
 
 
